@@ -4,8 +4,24 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"type": "project",
+	"repositories": [
+            {
+                "type": "vcs",
+                "url": "https://github.com/ciaranmaher/oauth-4-laravel"
+            }],
 	"require": {
-		"laravel/framework": "4.2.*"
+		"laravel/framework": "4.2.*",
+		"patchwork/utf8": "1.1.*",
+		"intervention/image" : "dev-master",
+		"guzzlehttp/guzzle": "~4.0",
+		"ollieread/multiauth": "dev-master",
+		"facebook/php-sdk-v4": "dev-master",
+		"artdarek/oauth-4-laravel": "dev-master",
+		"greggilbert/recaptcha": "1.1.5",
+		"bllim/datatables": "*",
+		"kmd/logviewer": "1.2.*",
+		"cboden/ratchet"             : "0.3.*",
+    	"brainboxlabs/brain-socket"  : "dev-master"
 	},
 	"autoload": {
 		"classmap": [

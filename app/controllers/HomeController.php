@@ -4,7 +4,7 @@ use OAuth\OAuth2\Token\StdOAuth2Token;
 use OAuth\OAuth1\Token\StdOAuth1Token;
 
 define('API', '5cc25d153168c441bb828d57526692d9');
-define('SESI',Auth::check());
+define('SESI',Auth::user()->check());
 class HomeController extends BaseController {
 
 	/*
@@ -40,7 +40,7 @@ class HomeController extends BaseController {
 
     	try{
 
-	    	if(Auth::check() || Auth::admin()->check())
+	    	if(Auth::user()->check() || Auth::admin()->check())
 	    	{
 
 		    	switch ($term) {
@@ -569,7 +569,7 @@ class HomeController extends BaseController {
 
 	public function register(){
 
-		if (Auth::check() == true)
+		if (Auth::user()->check() == true)
 		{
 			return Redirect::to('member');
 		}
@@ -585,7 +585,7 @@ class HomeController extends BaseController {
 	*/
 	public function login(){
 
-		if (Auth::check() == true)
+		if (Auth::user()->check() == true)
 		{
 			return Redirect::to('member');
 		}
@@ -608,12 +608,12 @@ class HomeController extends BaseController {
 
 		if ($validation->passes()) {
 
-			if (Auth::attempt($data, Input::get('rememberme'))){
+			if (Auth::user()->attempt($data, Input::get('rememberme'))){
 
 					//creating package if it doesnt have package				
 					$user = Auth::user()->get();
 	                
-	                return Response::json(array(array('status' => '1','data' => $user,'message' => 'Logging you in','id' => Auth::get()->user_id,'alert'=>'alert-success')));
+	                return Response::json(array(array('status' => '1','data' => $user,'message' => 'Logging you in','id' => Auth::user()->get()->user_id,'alert'=>'alert-success')));
 	        
 	        }else{
 
@@ -629,7 +629,7 @@ class HomeController extends BaseController {
 
 	public function doLogout(){
 
-		Auth::logout();
+		Auth::user()->logout();
 
 		return Redirect::to('login')->with('message', 'You have logged out succesfully');
 
