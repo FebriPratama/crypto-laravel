@@ -11,7 +11,17 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('/', 'HomeController@index');
+Route::get('member', 'HomeController@member');
+
+/*
+| Api Page
+=====
+*/
+//Route::pattern('id', '[0-9]+');
+
+Route::group(['prefix' => 'api','after' => 'allowOrigin'], function() {
+
+		Route::post('/login', 'HomeController@doLogin');//login
+
+	});
