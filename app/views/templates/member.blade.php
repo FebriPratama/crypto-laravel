@@ -16,8 +16,6 @@
 
         {{ HTML::style('css/AdminLTE.css') }}
 
-        {{ HTML::style('css/master.css') }}
-
         {{ HTML::style('css/skins/_all-skins.css') }}
 
         {{ HTML::style('css/skins/skin-red.css') }}
@@ -62,29 +60,6 @@
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Notifications: style can be found in dropdown.less -->
-
-              <li class="dropdown notifications-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notif-start">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning" id="notif-stat">{{ count($unread ? $unread : 0) }}</span>
-                </a>
-                <ul class="dropdown-menu" style="background:#1E282C;">
-                  <li class="header">You have {{ count($notifications) }} notifications</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu" id="notif-list">
-                      @foreach($notifications as $notif)
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> {{ $notif->notif_type_body }}
-                        </a>
-                      </li>
-                      @endforeach
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
-              </li>
               <li><a href=" {{ URL::to(Auth::user()->get()->user_permalink) }} " target="_blank"><i class='ion ion-ios-world-outline'></i> &nbsp view site</a></li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
@@ -314,12 +289,6 @@
                 console.log(data);
                 
              });
-
-              @if(count($unread ? $unread : 0)<1)
- 
-                $("#notif-stat").hide();
-
-              @endif
 
               $(".btn-disable").click(function(){
                 $(this).attr('disabled',true).text("Loading . .");
