@@ -22,6 +22,22 @@ App::after(function($request, $response)
 	//
 });
 
+Route::filter('allowOrigin', function($route, $request, $response) 
+{
+    $response->header('access-control-allow-origin','*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    
+});
+
+Route::filter('member', function() 
+{
+	if (Auth::user()->check() == false)
+	{
+		return Redirect::to('login');
+	}
+
+});
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters

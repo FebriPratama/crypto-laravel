@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'Asia/Jakarta',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'rikimarunoob',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -95,8 +95,12 @@ return array(
 
 	'providers' => array(
 
-		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-		'Illuminate\Auth\AuthServiceProvider',
+		'Illuminate\Foundation\Providers\ArtisanServiceProvider', 
+		'Bllim\Datatables\DatatablesServiceProvider',
+		'BrainSocket\BrainSocketServiceProvider',
+		'Kmd\Logviewer\LogviewerServiceProvider',
+		'Greggilbert\Recaptcha\RecaptchaServiceProvider', 
+		'Ollieread\Multiauth\MultiauthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
 		'Illuminate\Session\CommandsServiceProvider',
 		'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
@@ -114,13 +118,15 @@ return array(
 		'Illuminate\Queue\QueueServiceProvider',
 		'Illuminate\Redis\RedisServiceProvider',
 		'Illuminate\Remote\RemoteServiceProvider',
-		'Illuminate\Auth\Reminders\ReminderServiceProvider',
+		'Illuminate\Auth\Reminders\ReminderServiceProvider',		
 		'Illuminate\Database\SeedServiceProvider',
 		'Illuminate\Session\SessionServiceProvider',
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+		'Intervention\Image\ImageServiceProvider',
+		'Artdarek\OAuth\OAuthServiceProvider'
 
 	),
 
@@ -151,7 +157,9 @@ return array(
 	'aliases' => array(
 
 		'App'               => 'Illuminate\Support\Facades\App',
+		'Datatables'      	=> 'Bllim\Datatables\Facade\Datatables',
 		'Artisan'           => 'Illuminate\Support\Facades\Artisan',
+		'BrainSocket'     	=> 'BrainSocket\BrainSocketFacade',
 		'Auth'              => 'Illuminate\Support\Facades\Auth',
 		'Blade'             => 'Illuminate\Support\Facades\Blade',
 		'Cache'             => 'Illuminate\Support\Facades\Cache',
@@ -188,6 +196,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+		'Image'	 			=> 'Intervention\Image\Facades\Image',
+		'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
 
 	),
 

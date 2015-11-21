@@ -20,8 +20,22 @@ Route::get('member', 'HomeController@member');
 */
 //Route::pattern('id', '[0-9]+');
 
-Route::group(['prefix' => 'api','after' => 'allowOrigin'], function() {
+Route::group(['prefix' => 'api','after' => 'allowOrigin'], function() 
+{
 
 		Route::post('/login', 'HomeController@doLogin');//login
 
+});
+
+Route::group(['prefix' => 'member', 'before' => 'member'], function() 
+{
+
+	Route::get('/',function(){
+
+		return Redirect::to('member/dashboard');
+	
 	});
+
+	Route::get('/dashboard', 'HomeController@dashboard');
+
+});
