@@ -37,15 +37,28 @@ class HomeController extends BaseController {
 
 	public function testCon(){
 		
+		$input = array(
+
+			'm_user_id' => Auth::user()->get()->user_id,
+			'm_text' => Kripto::encode(strtoupper(Input::get('pesan')))
+
+			);
+
+		$m = Tbl_message::create($input);
+
 		$data = array(
 
-			'ok' => 'test'
+			'id' => Auth::user()->get()->user_id, 
+			'name' => Auth::user()->get()->user_fullname, 
+			'message' => Input::get('pesan')
 
 			);
 
 		Event::fire(UpdateScoreEventHandler::EVENT, $data);
 
-		return Response::json(array('message'=>'ok'));
+		$mes = strtolower(Kripto::decode($m->m_text));
+
+		return Response::json(array('m_text' => str_replace(array(':'), ' ', $mes) ));
 	}
 
     public function modal($term,$tag,$action = null)
@@ -98,6 +111,54 @@ class HomeController extends BaseController {
 
 		return View::make('register');
 	
+	}
+
+	public function store()
+	{
+
+            $address = Input::get('address');
+            $businesscat = "None";
+            $zip= "0";
+            $bname= Input::get('shop');          
+            $birthdate =date('Y-m-d');
+            $desc = '';
+            $btype= '';
+            $speciality = '';
+
+            $rules = Tbl_user::$rulesbiasa;
+
+      		$input = array(
+
+      						'user_fullname' => Input::get('name'),
+                			'user_img_profile' => 'avatar5.png',
+                            'user_register_date' => date("Y-m-d H:i:s"),
+                            'password'  => Input::get('pswd'),
+                            'email' => Input::get('email'),
+                            'user_role' => 'member',
+                            'user_permalink' =>  str_random(6).''.Input::get('name')
+                        
+                        );
+
+      		//Checking for empty variables
+            $validation = Validator::make($input, $rules);
+
+            if ($validation->passes())
+            {
+
+            	//Creating user data
+                $user = Tbl_user::create($input);
+
+                $userid = $user->user_id;    
+
+                Auth::user()->loginUsingId($userid);
+
+                return Response::json(array(array('status' => '1','data' => $user,'message' => 'Registered successfully, logging you in','alert'=>'alert-success')));
+
+            }
+
+            //return Response::json(array(array('status' => '0','message' => 'user creating failed','alert'=>'alert-danger')));
+
+            return $validation->messages()->toJson();
 	}
 
 	/*
@@ -153,7 +214,7 @@ class HomeController extends BaseController {
 
 		Auth::user()->logout();
 
-		return Redirect::to('login')->with('message', 'You have logged out succesfully');
+		return Redirect::to('/')->with('message', 'You have logged out succesfully');
 
 	}
 
@@ -163,9 +224,11 @@ class HomeController extends BaseController {
 
 	*/
 	
-	public function dashboard(){
+	public function dashboard(){	
 
-		$messages = Tbl_message::all();
+
+		$messages = DB::table('tbl_messages')->join('tbl_users','tbl_users.user_id','=','tbl_messages.m_user_id')
+			->select('tbl_messages.*','tbl_users.*')->get();
 
 		return View::make('member.home',compact('messages'));
 	}

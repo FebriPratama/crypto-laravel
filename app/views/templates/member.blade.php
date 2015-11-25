@@ -66,13 +66,10 @@
               <li class="dropdown user user-menu">
 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="{{ URL::asset('img/user/profile/'.Auth::user()->get()->user_img_profile) }}" onerror="imgError(this)" class="user-image" alt="{{ Auth::user()->get()->user_fullname }}"/>
+                  <img src="{{ URL::asset('img/'.Auth::user()->get()->user_img_profile) }}" onerror="imgError(this)" class="user-image" alt="{{ Auth::user()->get()->user_fullname }}"/>
                   <span class="hidden-xs">{{ Auth::user()->get()->user_fullname }}</span>
                 </a>
                 <ul class="dropdown-menu" role="menu"  style="background:#1E282C;">
-                  <li><a href="{{ URL::to('member/profile') }}">Account</a></li>
-                  <li><a href="#">Uprade</a></li>
-                  <li><a href="#">Install</a></li>
                   <li><a href="{{ URL::to('member/logout') }}">Logout</a></li>
                 </ul>
               </li>

@@ -35,48 +35,44 @@
 
                         @foreach($messages as $m)
 
-                            @if()
+                            @if($m->m_user_id == Auth::user()->get()->user_id)
+
+                                <div class="row msg_container base_receive">
+                                    <div class="col-md-1 col-xs-1 avatar">
+                                       {{ $m->user_fullname }}
+                                    </div>
+                                    <div class="col-md-11 col-xs-11">
+                                        <div class="messages msg_receive">
+                                            <p>{{ str_replace(':', ' ', strtolower(Kripto::decode($m->m_text))) }}</p>
+                                        </div>
+                                    </div>
+                                </div>
 
                             @else
 
-                            @endif
+                                <div class="row msg_container base_sent">
+                                    <div class="col-md-11 col-xs-11">
+                                        <div class="messages msg_sent">
+                                            <p>{{ str_replace(':', ' ', strtolower(Kripto::decode($m->m_text))) }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-xs-1 avatar">
+                                        {{ $m->user_fullname }}
+                                    </div>
+                                </div>
+
+                            @endif                           
                             
-                            $m->m_text
 
                         @endforeach
 
                     @endif
-                    <div class="row msg_container base_sent">
-                        <div class="col-md-11 col-xs-11">
-                            <div class="messages msg_sent">
-                                <p>that mongodb thing looks good, huh?
-                                tiny master db, and huge document store</p>
-                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                            </div>
-                        </div>
-                        <div class="col-md-1 col-xs-1 avatar">
-                            Jojon
-                        </div>
-                    </div>
-
-                    <div class="row msg_container base_receive">
-                        <div class="col-md-1 col-xs-1 avatar">
-                           Jojon
-                        </div>
-                        <div class="col-md-11 col-xs-11">
-                            <div class="messages msg_receive">
-                                <p>that mongodb thing looks good, huh?
-                                tiny master db, and huge document store</p>
-                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="panel-footer">
                     <form id="chat">
                         <div class="input-group">
-                            <input id="btn-input" type="text" id="pesan" class="form-control input-sm chat_input" placeholder="Write your message here..." />
+                            <input id="btn-input" type="text" id="pesan" name="pesan" class="form-control input-sm chat_input" placeholder="Write your message here..." />
                             <span class="input-group-btn">
                             <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>
                             </span>
@@ -101,48 +97,95 @@
         socket.on("status", function(msg){
              console.log(msg);
         });
+        
+        toBot();
 
         socket.on("getChat", function(msg){
 
-            if(msg.name == '{{ Auth::user()->get()->user_fullname }}'){
+            if($('#chat').find('h2').length){
+                
+              $('#chat').find('h2').remove;
 
+            } 
+
+            if(msg.id == '{{ Auth::user()->get()->user_id }}'){
+
+                data = '<div class="row msg_container base_receive">'
+                          +'<div class="col-md-1 col-xs-1 avatar">'
+                            +msg.name
+                          +'</div>'
+                          +'<div class="col-md-11 col-xs-11">'
+                              +'<div class="messages msg_receive">'
+                                 +'<p>'+msg.message+'</p>'
+                             +'</div>'
+                          +'</div>'
+                      +'</div>';
 
             }else{
 
+                data = '<div class="row msg_container base_receive">'
+                          +'<div class="col-md-11 col-xs-11">'
+                              +'<div class="messages msg_receive">'
+                                 +'<p>'+msg.message+'</p>'
+                             +'</div>'
+                          +'</div>'
+                          +'<div class="col-md-1 col-xs-1 avatar">'
+                            +msg.name
+                          +'</div>'
+                      +'</div>';
 
             }
 
-             $("#showchat").append("<li>"+msg+"</li>");
+            $("#showchat").append(data);
+            toBot();
+
         });
 
-        socket.on('score.update', function (data) {
-            //Do something with data
-            console.log('Score updated: ');
-         });
+      function toBot() {
+
+        var wtf    = $('#showchat');
+        var height = wtf[0].scrollHeight;
+        wtf.scrollTop(height);
+
+      };
 
       $("#chat").submit(function(){
 
-            //socket.emit("sendChat", { name : '{{ Auth::user()->get()->user_fullname }}', message : $("#pesan").val() });
+            //socket.emit("sendChat", { id : '{{ Auth::user()->get()->user_id }}', message : $("#pesan").val() });
 
-            
+                var m = $("#pesan").val();
+                var data = $("#chat").serialize();
+                $(this).find('input').attr("disabled", true);
+                $(this).find('button').html('Sending . .').attr("disabled", true);
+
                 $.ajax({
 
                       type: "POST",
 
-                      url: '{{ URL::to('chat') }}',
+                      url: '{{ URL::to('api/chat') }}',
 
-                      data: $("#chat").serialize(), 
+                      data: data, 
 
                       dataType : 'json',
 
                       cache : false,
 
+                      error: function (xhr, textStatus, errorThrown) {
+
+                          $("#chat").find('button').html('Retry').attr("disabled", false);
+                          $("#chat").find('input').attr("disabled", false);
+                          $("#chat").find('input').focus();
+
+                      },
+
                       success : function(hasil){    
 
-                            socket.emit("sendChat", { name : '{{ Auth::user()->get()->user_fullname }}', message : $("#pesan").val() });
+                          socket.emit("sendChat", { id : '{{ Auth::user()->get()->user_id }}', name : '{{ Auth::user()->get()->user_fullname }}', message : hasil.m_text });
+                          
+                          $("#chat").find('button').html('Send').attr("disabled", false);
+                          $("#chat").find('input').attr("disabled", false);
+                          $("#chat").trigger("reset");
 
-                            console.log("terkirim");
-                      
                       }
                     
                 });

@@ -40,12 +40,8 @@ class Tbl_user extends Eloquent implements UserInterface, RemindableInterface {
 	  );
 
 	public static $rulesbiasa = array(
-	    'user_fullname' => 'required|min:5',
-	    'user_address' => 'required',
+	    'user_fullname' => 'required|min:4',
 	    'password' => 'required|min:8',
-	    'user_zip' => 'required|numeric',
-	    'user_phone_number' => 'required|numeric',
-	    'user_permalink' => 'required|unique:tbl_users,user_permalink',
 	    'email' => 'required|unique:tbl_users,email'
 	  );
 

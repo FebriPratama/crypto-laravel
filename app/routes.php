@@ -15,6 +15,7 @@ Route::get('/', 'HomeController@index');
 Route::get('member', 'HomeController@member');
 Route::get('/login', 'HomeController@index');
 Route::get('modal/{term}/{tag}/{action}', 'HomeController@modal');
+Route::get('register', 'HomeController@register');
 
 /*
 | Api Page
@@ -27,6 +28,7 @@ Route::group(['prefix' => 'api','after' => 'allowOrigin'], function()
 
 		Route::post('/login', 'HomeController@doLogin');//login
 		Route::post('/chat', 'HomeController@testCon');
+		Route::post('/user', 'HomeController@store');
 
 });
 
@@ -40,5 +42,7 @@ Route::group(['prefix' => 'member', 'before' => 'member'], function()
 	});
 
 	Route::get('/dashboard', 'HomeController@dashboard');
+
+	Route::get('/logout', 'HomeController@doLogout');
 
 });

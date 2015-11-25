@@ -114,8 +114,9 @@ return array(
 		'cluster' => false,
 
 		'default' => array(
-			'host'     => '127.0.0.1',
-			'port'     => 6379,
+			'host'     => 'pub-redis-11778.us-east-1-4.6.ec2.redislabs.com',
+			'port'     => 11778,
+			'password' => 'silahkanmasuk123',
 			'database' => 0,
 		),
 
