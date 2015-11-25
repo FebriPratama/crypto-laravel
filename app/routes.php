@@ -13,6 +13,8 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('member', 'HomeController@member');
+Route::get('/login', 'HomeController@index');
+Route::get('modal/{term}/{tag}/{action}', 'HomeController@modal');
 
 /*
 | Api Page
@@ -24,6 +26,7 @@ Route::group(['prefix' => 'api','after' => 'allowOrigin'], function()
 {
 
 		Route::post('/login', 'HomeController@doLogin');//login
+		Route::post('/chat', 'HomeController@testCon');
 
 });
 
