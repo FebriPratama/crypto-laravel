@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Register Page | Vendpad</title>
+    <title>Register Page | Kripto</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Theme style -->
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
